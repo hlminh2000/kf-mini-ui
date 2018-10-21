@@ -8,6 +8,7 @@ import { Query } from "react-apollo";
 import { ContentContainer, StyledPaper, SectionContainer } from "./components";
 import ProfileEditor from "./ProfileEditor";
 import Jumbotron from "./Jumbotron";
+import SavedQueries from "./SavedQueries";
 
 export default () => {
   const USER_QUERY = gql`
@@ -21,7 +22,7 @@ export default () => {
   `;
   return (
     <Query query={USER_QUERY}>
-      {({ data: { user }, loading, error }) =>
+      {({ data: { user } = {}, loading, error }) =>
         loading ? (
           <CircularProgress />
         ) : error ? (
@@ -45,15 +46,29 @@ export default () => {
                     <>
                       <SectionContainer>
                         <Typography variant="subheading" component="h3">
-                          {`About me`}
+                          About me
                         </Typography>
-                        <StyledPaper elevation={1}>{user.bio}</StyledPaper>
+                        <StyledPaper elevation={1}>
+                          <pre>
+                            <Typography>{user.bio}</Typography>
+                          </pre>
+                        </StyledPaper>
                       </SectionContainer>
                       <SectionContainer>
                         <Typography variant="subheading" component="h3">
-                          {"My Story"}
+                          My Story
                         </Typography>
-                        <StyledPaper elevation={1}>{user.story}</StyledPaper>
+                        <StyledPaper elevation={1}>
+                          <pre>
+                            <Typography>{user.story}</Typography>
+                          </pre>
+                        </StyledPaper>
+                      </SectionContainer>
+                      <SectionContainer>
+                        <Typography variant="subheading" component="h3">
+                          Saved Queries
+                        </Typography>
+                        <SavedQueries />
                       </SectionContainer>
                     </>
                   )}
