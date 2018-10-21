@@ -1,0 +1,24 @@
+{
+  "extensions": {
+    "endpoints": {
+      "dev": {
+        "url": "http://localhost:4000/graphql",
+        "headers": {
+          "Authorization": "Bearer ${env:EGO_JWT_SECRET}"
+        }
+      },
+      "persona": {
+        "url": "${env:PERSONA_API}/graphql",
+        "headers": {
+          "Authorization": "Bearer ${env:EGO_JWT_SECRET}"
+        }
+      },
+      "arranger": {
+        "url": "${env:ARRANGER_API}/${env:ARRANGER_PROJECT_ID}/graphql",
+        "headers": {
+          "Authorization": "Bearer ${env:EGO_JWT_SECRET}"
+        }
+      }
+    }
+  }
+}
