@@ -1,12 +1,12 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import TextField from "@material-ui/core/TextField";
 import State from "@microstates/react";
 import Button from "@material-ui/core/Button";
 import { gql } from "apollo-boost";
 import { Query, Mutation } from "react-apollo";
 
-import { SectionContainer, FullWidthInput } from "./components";
+import { SectionContainer } from "./components";
 
 export default ({ onDoneClick = () => {} }) => {
   const USER_QUERY = gql`
@@ -17,6 +17,8 @@ export default ({ onDoneClick = () => {} }) => {
         title
         firstName
         lastName
+        bio
+        story
       }
     }
   `;
@@ -30,6 +32,8 @@ export default ({ onDoneClick = () => {} }) => {
           title
           firstName
           lastName
+          bio
+          story
         }
       }
     }
@@ -40,13 +44,17 @@ export default ({ onDoneClick = () => {} }) => {
     title = String;
     firstName = String;
     lastName = String;
+    bio = String;
+    story = String;
   };
   const captureSnapshot = userMicrostate => ({
     _id: userMicrostate._id.state,
     egoId: userMicrostate.egoId.state,
     title: userMicrostate.title.state,
     firstName: userMicrostate.firstName.state,
-    lastName: userMicrostate.lastName.state
+    lastName: userMicrostate.lastName.state,
+    bio: userMicrostate.bio.state,
+    story: userMicrostate.story.state
   });
   return (
     <Query query={USER_QUERY}>
@@ -62,10 +70,9 @@ export default ({ onDoneClick = () => {} }) => {
                 {localUsetData => (
                   <>
                     <SectionContainer>
-                      <Typography variant="subheading" component="h3">
-                        {`First Name`}
-                      </Typography>
-                      <FullWidthInput
+                      <TextField
+                        variant="outlined"
+                        label="First Name"
                         disabled={userUpdateLoading}
                         placeholder="First Name"
                         value={localUsetData.firstName.state}
@@ -75,16 +82,37 @@ export default ({ onDoneClick = () => {} }) => {
                       />
                     </SectionContainer>
                     <SectionContainer>
-                      <Typography variant="subheading" component="h3">
-                        {`Last Name`}
-                      </Typography>
-                      <FullWidthInput
+                      <TextField
+                        variant="outlined"
+                        label="Last Name"
                         disabled={userUpdateLoading}
                         placeholder="Last Name"
                         value={localUsetData.lastName.state}
                         onChange={e =>
                           localUsetData.lastName.set(e.target.value)
                         }
+                      />
+                    </SectionContainer>
+                    <SectionContainer>
+                      <TextField
+                        multiline
+                        variant="filled"
+                        label="Bio"
+                        disabled={userUpdateLoading}
+                        placeholder="Bio"
+                        value={localUsetData.bio.state}
+                        onChange={e => localUsetData.bio.set(e.target.value)}
+                      />
+                    </SectionContainer>
+                    <SectionContainer>
+                      <TextField
+                        multiline
+                        variant="filled"
+                        label="Story"
+                        disabled={userUpdateLoading}
+                        placeholder="Story"
+                        value={localUsetData.story.state}
+                        onChange={e => localUsetData.story.set(e.target.value)}
                       />
                     </SectionContainer>
                     <SectionContainer row>
@@ -102,7 +130,12 @@ export default ({ onDoneClick = () => {} }) => {
                       >
                         {userUpdateLoading ? <CircularProgress /> : "Save"}
                       </Button>
-                      <Button onClick={onDoneClick}>Done</Button>
+                      <Button
+                        disabled={userUpdateLoading}
+                        onClick={onDoneClick}
+                      >
+                        Done
+                      </Button>
                     </SectionContainer>
                   </>
                 )}
